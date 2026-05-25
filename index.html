@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videy Hub & Blogger Feed Scraper</title>
+    <title>Videy Hub & Blogger Post Scraper</title>
     <!-- Tailwind CSS untuk UI Modern -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome untuk Ikon Premium -->
@@ -39,7 +39,7 @@
                     <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-500 to-rose-400 bg-clip-text text-transparent">
                         VIDEY HUB
                     </h1>
-                    <p class="text-[10px] text-gray-400 font-medium tracking-widest uppercase">Blogger Feed, Video & Cover Downloader</p>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-widest uppercase">Blogger Post Content & Cover Downloader</p>
                 </div>
             </div>
             
@@ -65,11 +65,11 @@
                         <i class="fa-solid fa-wand-magic-sparkles text-red-500"></i>
                         Putar Instan via ID / URL
                     </h2>
-                    <p class="text-xs text-gray-400 mb-4">Input link Videy, parameter watch_cdj, atau ID langsung untuk streaming / download instan.</p>
+                    <p class="text-xs text-gray-400 mb-4">Input link Videy atau ID video langsung untuk streaming / download instan.</p>
                 </div>
                 <div class="space-y-3">
                     <div class="relative">
-                        <input type="text" id="manualInput" placeholder="Contoh: JlDleI9V1 atau URL lengkap" 
+                        <input type="text" id="manualInput" placeholder="Contoh: JlDleI9V1 atau URL Videy" 
                             class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-gray-200 focus:outline-none focus:border-red-500 transition pl-9">
                         <i class="fa-solid fa-link absolute left-3 top-3.5 text-gray-500 text-xs"></i>
                     </div>
@@ -82,21 +82,21 @@
             <!-- Pengaturan Target Scraper Blogger -->
             <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-xl col-span-1 lg:col-span-2 flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between mb-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
                         <h2 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
                             <i class="fa-solid fa-square-rss text-red-500"></i>
-                            Sumber Scraping Blogger (Feed Engine)
+                            Sumber Scraping Blogger (Post Engine)
                         </h2>
-                        <span class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-400 font-bold px-2 py-0.5 rounded-full">
-                            Auto Blogger Feed Enabled
+                        <span class="text-[10px] bg-indigo-950 border border-indigo-800 text-indigo-400 font-bold px-2.5 py-1 rounded-full mt-1 sm:mt-0">
+                            Blogger Content Scanner Aktif
                         </span>
                     </div>
-                    <p class="text-xs text-gray-400 mb-4">Mendukung ekstraksi link langsung dari postingan Blogger via Feed API JSON (Sangat cepat & mampu memuat banyak video sekaligus).</p>
+                    <p class="text-xs text-gray-400 mb-4">Mengekstrak judul postingan, gambar preview, serta ID video Videy yang dipasang di dalam konten artikel.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                     <div class="md:col-span-2">
                         <label class="block text-[10px] text-gray-400 uppercase tracking-wider mb-1 font-bold">Target Blog URL</label>
-                        <input type="text" id="blogUrlInput" value="https://leakedvideosfree.blogspot.com" 
+                        <input type="text" id="blogUrlInput" value="http://cdnvidey123.blogspot.com" 
                             class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-gray-200 focus:outline-none focus:border-red-500 transition">
                     </div>
                     <div>
@@ -120,7 +120,7 @@
         <!-- Bagian Filter & Pencarian -->
         <div class="bg-gray-900/50 border border-gray-850 rounded-2xl p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
             <div class="relative w-full md:w-96">
-                <input type="text" id="searchInput" oninput="filterVideos()" placeholder="Cari judul video atau ID..." 
+                <input type="text" id="searchInput" oninput="filterVideos()" placeholder="Cari judul postingan atau ID..." 
                     class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-gray-200 focus:outline-none focus:border-red-500 transition pl-9">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-500 text-xs"></i>
             </div>
@@ -128,11 +128,11 @@
             <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
                 <div class="text-xs text-gray-400 bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 flex items-center gap-2">
                     <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                    Engine Aktif: <span id="activeEngineText" class="font-bold text-indigo-400">Blogger Feed API</span>
+                    Engine: <span id="activeEngineText" class="font-bold text-indigo-400">Blogger API Content Scanner</span>
                 </div>
                 <div class="text-xs text-gray-400 bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 flex items-center gap-2">
                     <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Total Link Terekstrak: <span id="videoStatsCount" class="font-bold text-white">0</span>
+                    Total Postingan Terekstrak: <span id="videoStatsCount" class="font-bold text-white">0</span>
                 </div>
             </div>
         </div>
@@ -156,7 +156,7 @@
                     <i class="fa-solid fa-triangle-exclamation text-xl text-red-500"></i>
                 </div>
                 <h3 class="text-sm font-semibold text-red-200 mb-1">Gagal Membaca Blog Target</h3>
-                <p id="errorMessage" class="text-xs text-red-400 mb-4">Terjadi kesalahan saat menghubungi API proxy atau semua server proxy cadangan sedang sibuk.</p>
+                <p id="errorMessage" class="text-xs text-red-400 mb-4">Terjadi kesalahan saat menghubungi API proxy atau blog target tidak ditemukan.</p>
                 <button onclick="fetchBlogData()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
                     Coba Lagi dengan Rotasi Proxy Baru
                 </button>
@@ -171,8 +171,8 @@
             <div class="w-16 h-16 bg-gray-950 border border-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fa-solid fa-video-slash text-gray-600 text-lg"></i>
             </div>
-            <h3 class="text-sm font-semibold text-gray-300">Tidak Ada Video</h3>
-            <p class="text-xs text-gray-500 mt-1">Ganti target URL blog atau cari kata kunci lain.</p>
+            <h3 class="text-sm font-semibold text-gray-300">Tidak Ada Video / Postingan</h3>
+            <p class="text-xs text-gray-500 mt-1">Ganti target URL blog atau pastikan postingan memiliki link/embed video Videy.</p>
         </div>
 
     </main>
@@ -182,7 +182,7 @@
         <p>© 2026 Videy Hub Utility. Dibuat khusus untuk pengarsipan dan manajemen media pribadi.</p>
     </footer>
 
-    <!-- Modal Pemutar Interaktif -->
+    <!-- Modal Pemutar Interaktif (Cadangan/Opsi Putar di Sini) -->
     <div id="playerModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-gray-900 border border-gray-800 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl relative" onclick="event.stopPropagation()">
             
@@ -240,7 +240,7 @@
                         <button onclick="copyEmbedCode()" class="bg-gray-900 hover:bg-gray-850 border border-gray-800 text-gray-300 font-semibold text-xs py-2 px-3 rounded-xl transition flex items-center gap-1.5" title="Salin Kode Embed Iframe">
                             <i class="fa-solid fa-code"></i> Embed Code
                         </button>
-                        <!-- Unduh Thumbnail Terpisah (Fitur Baru) -->
+                        <!-- Unduh Thumbnail Terpisah -->
                         <button id="modalDownloadThumbBtn" class="bg-gray-900 hover:bg-gray-850 border border-gray-800 text-gray-300 font-semibold text-xs py-2 px-3 rounded-xl transition flex items-center gap-1.5" title="Unduh gambar preview/sampul video ini">
                             <i class="fa-regular fa-image text-emerald-400"></i> Unduh Thumbnail
                         </button>
@@ -260,6 +260,17 @@
         </div>
     </div>
 
+    <!-- Toast Unduhan Melayang -->
+    <div id="downloadProgressToast" class="fixed bottom-5 right-5 z-50 bg-gray-900 border border-gray-800 px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 hidden max-w-sm">
+        <div class="w-8 h-8 rounded-full bg-emerald-950 flex items-center justify-center text-emerald-400">
+            <i class="fa-solid fa-circle-notch animate-spin"></i>
+        </div>
+        <div>
+            <div class="text-xs font-bold text-white">Sedang Memproses File...</div>
+            <div class="text-[10px] text-gray-400">Mengunduh berkas via proxy anti-CORS...</div>
+        </div>
+    </div>
+
     <script>
         // State Global
         let allVideos = [];
@@ -273,39 +284,30 @@
             { name: "Codetabs Proxy", get: url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}` }
         ];
 
-        // Ekstraksi ID Videy menggunakan Regex dari berbagai format URL
-        const extractVideyId = (href) => {
-            if (!href) return null;
+        // Ekstraksi ID Videy menggunakan Regex murni dari konten teks/tautan HTML
+        const extractVideyIdFromContent = (text) => {
+            if (!text) return null;
             try {
-                const cleanedHref = href.trim();
-                
-                // 1. Deteksi parameter watch_cdj (contoh: watch_cdj=JlDleI9V1)
-                const watchCdjMatch = cleanedHref.match(/watch_cdj=([a-zA-Z0-9_-]+)/i);
-                if (watchCdjMatch) return watchCdjMatch[1];
-
-                // 2. Tautan halaman tonton Videy langsung (videy.co/v?id=abcde)
-                const directIdMatch = cleanedHref.match(/[?&]id=([a-zA-Z0-9_-]+)/i);
-                if (directIdMatch && cleanedHref.includes("videy.co")) return directIdMatch[1];
-
-                // 3. Tautan Embed Videy langsung (videy.co/embed?id=abcde)
-                if (cleanedHref.includes("embed") && directIdMatch) return directIdMatch[1];
-
-                // 4. Jalur CDN Videy langsung (cdn.videy.co/abcde.mp4)
-                if (cleanedHref.includes("cdn.videy.co")) {
-                    const match = cleanedHref.match(/\/([a-zA-Z0-9_-]+)\.(mp4|mov|webm)/i);
-                    if (match) return match[1];
+                // 1. Cari tautan embed: videy.co/embed?id=VIDEO_ID
+                // 2. Cari tautan tonton: videy.co/v?id=VIDEO_ID
+                const idQueryMatch = text.match(/videy\.co\/(embed|v)\?id=([a-zA-Z0-9_-]+)/i);
+                if (idQueryMatch && idQueryMatch[2]) {
+                    return idQueryMatch[2];
                 }
-                
-                const url = new URL(cleanedHref);
-                if (url.searchParams.has("watch_cdj")) {
-                    return url.searchParams.get("watch_cdj");
+
+                // 3. Cari tautan CDN langsung: cdn.videy.co/VIDEO_ID.mp4
+                const cdnMatch = text.match(/cdn\.videy\.co\/([a-zA-Z0-9_-]+)\.(mp4|mov|webm)/i);
+                if (cdnMatch && cdnMatch[1]) {
+                    return cdnMatch[1];
                 }
-                if (url.searchParams.has("id")) {
-                    return url.searchParams.get("id");
+
+                // 4. Cari pola url umum videy: videy.co/VIDEO_ID
+                const pathMatch = text.match(/videy\.co\/([a-zA-Z0-9_-]+)/i);
+                if (pathMatch && pathMatch[1] && !['embed', 'v'].includes(pathMatch[1])) {
+                    return pathMatch[1];
                 }
             } catch (e) {
-                const watchCdjFallback = href.match(/watch_cdj=([a-zA-Z0-9_-]+)/i);
-                if (watchCdjFallback) return watchCdjFallback[1];
+                console.warn("Kesalahan pencocokan regex:", e);
             }
             return null;
         };
@@ -317,9 +319,15 @@
 
         // Fungsi unduh berkas (file/image blob) secara pintar untuk mengatasi masalah cross-origin
         async function triggerDownload(url, filename) {
+            const toast = document.getElementById("downloadProgressToast");
+            toast.classList.remove("hidden");
+            
             try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Gagal mengambil file gambar.");
+                // Gunakan proxy pertama untuk memintas proteksi CORS Blogger
+                const proxyUrl = PROXIES[0].get(url);
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error("Gagal mengunduh gambar lewat proxy.");
+                
                 const blob = await response.blob();
                 const blobUrl = URL.createObjectURL(blob);
                 
@@ -332,8 +340,11 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(blobUrl);
             } catch (e) {
-                // Jika terbentur masalah kebijakan CORS gambar, buka di tab baru agar user bisa simpan manual
+                console.warn("Proxy blob download failed, falling back to direct tab:", e);
+                // Fallback: buka di tab baru agar user bisa simpan manual
                 window.open(url, '_blank');
+            } finally {
+                toast.classList.add("hidden");
             }
         }
 
@@ -345,8 +356,9 @@
                 return;
             }
 
+            // Normalisasi URL HTTP ke HTTPS jika perlu
             if (!/^https?:\/\//i.test(blogUrl)) {
-                blogUrl = 'https://' + blogUrl;
+                blogUrl = 'http://' + blogUrl;
             }
 
             // Memunculkan efek loading animasi
@@ -355,21 +367,13 @@
             document.getElementById("errorState").classList.add("hidden");
             document.getElementById("emptyState").classList.add("hidden");
 
-            // Cek apakah target merupakan domain Blogger/Blogspot
-            const isBlogger = blogUrl.toLowerCase().includes("blogspot.com") || blogUrl.toLowerCase().includes("blogger.com");
-            let targetUrl = blogUrl;
-            
-            if (isBlogger) {
-                document.getElementById("activeEngineText").innerText = "Blogger Feed API (JSON)";
-                const maxResults = document.getElementById("maxResultsInput").value;
-                try {
-                    const parsed = new URL(blogUrl);
-                    targetUrl = `${parsed.origin}/feeds/posts/default?alt=json&max-results=${maxResults}`;
-                } catch(e) {
-                    targetUrl = blogUrl.replace(/\/$/, "") + `/feeds/posts/default?alt=json&max-results=${maxResults}`;
-                }
-            } else {
-                document.getElementById("activeEngineText").innerText = "Standard HTML Scraper";
+            const maxResults = document.getElementById("maxResultsInput").value;
+            let targetUrl = "";
+            try {
+                const parsed = new URL(blogUrl);
+                targetUrl = `${parsed.origin}/feeds/posts/default?alt=json&max-results=${maxResults}`;
+            } catch(e) {
+                targetUrl = blogUrl.replace(/\/$/, "") + `/feeds/posts/default?alt=json&max-results=${maxResults}`;
             }
 
             let responseData = null;
@@ -378,7 +382,7 @@
             // Loop rotasi seluruh proxy
             for (let i = 0; i < PROXIES.length; i++) {
                 const currentProxy = PROXIES[i];
-                document.getElementById("proxyStatusText").innerText = `Mencoba melalui ${currentProxy.name}... [Proxy ${i+1}/${PROXIES.length}]`;
+                document.getElementById("proxyStatusText").innerText = `Menghubungkan via ${currentProxy.name}... [Proxy ${i+1}/${PROXIES.length}]`;
                 
                 try {
                     const requestUrl = currentProxy.get(targetUrl);
@@ -404,121 +408,91 @@
             // Jika semua proxy gagal
             if (!responseData) {
                 document.getElementById("loadingState").classList.add("hidden");
-                showError("Semua server proxy cadangan gagal merespon. Coba lagi atau cek koneksi internet Anda.");
+                showError("Gagal terhubung ke database blogspot. Server proxy cadangan sedang sibuk atau URL salah.");
                 return;
             }
 
-            // Memulai proses parsing data
+            // Memulai proses parsing data konten
             try {
                 allVideos = [];
                 let trackingMap = new Set(); // Mencegah duplikasi data
 
-                if (isBlogger && (responseData.trim().startsWith("{") || responseData.trim().includes('"feed"'))) {
-                    // Pemrosesan menggunakan Blogger JSON Feed API
-                    const json = JSON.parse(responseData);
-                    const entries = json.feed?.entry || [];
+                const json = JSON.parse(responseData);
+                const entries = json.feed?.entry || [];
+                
+                entries.forEach(entry => {
+                    const postTitle = entry.title?.$t || "Untitled Post";
+                    const contentHtml = entry.content?.$t || "";
                     
-                    entries.forEach(entry => {
-                        const title = entry.title?.$t || "Untitled Video";
-                        
-                        // Ekstraksi thumbnail resolusi tinggi
-                        let thumbnail = "";
-                        if (entry.media$thumbnail?.url) {
-                            // Tingkatkan kualitas ukuran gambar Blogger dari s72-c menjadi s600
-                            thumbnail = entry.media$thumbnail.url.replace(/\/s72-c/, "/s600");
-                        } else {
-                            // Mencari tag gambar di dalam konten postingan HTML
-                            const contentHtml = entry.content?.$t || "";
-                            const tempDiv = document.createElement("div");
-                            tempDiv.innerHTML = contentHtml;
-                            const firstImg = tempDiv.querySelector("img");
-                            thumbnail = firstImg ? firstImg.src : `https://picsum.photos/seed/${title.length}/600/400`;
-                        }
+                    // 1. Cari Thumbnail Postingan asli resolusi tinggi
+                    let postThumbnail = "";
+                    if (entry.media$thumbnail?.url) {
+                        // Ubah resolusi kecil s72-c menjadi s600 agar tajam
+                        postThumbnail = entry.media$thumbnail.url.replace(/\/s72-c/, "/s600");
+                    } else {
+                        // Fallback: Cari gambar img pertama di dalam body postingan
+                        const tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = contentHtml;
+                        const firstImg = tempDiv.querySelector("img");
+                        postThumbnail = firstImg ? firstImg.src : `https://picsum.photos/seed/${postTitle.length}/600/400`;
+                    }
 
-                        const candidateUrls = [];
-                        
-                        // Ambil tautan alternatif postingan (biasanya memuat parameter ?watch_cdj=ID)
-                        const altLinks = entry.link || [];
-                        altLinks.forEach(l => {
-                            if (l.rel === "alternate" && l.href) {
-                                candidateUrls.push(l.href);
-                            }
-                        });
-
-                        // Ambil tautan di dalam body konten postingan
-                        const contentHtml = entry.content?.$t || "";
-                        if (contentHtml) {
-                            const tempDiv = document.createElement("div");
-                            tempDiv.innerHTML = contentHtml;
-                            const anchors = tempDiv.querySelectorAll("a");
-                            anchors.forEach(a => {
-                                if (a.href) candidateUrls.push(a.href);
-                            });
-                        }
-
-                        // Verifikasi kecocokan ID Videy
-                        candidateUrls.forEach(urlStr => {
-                            const videyId = extractVideyId(urlStr);
-                            if (videyId && !trackingMap.has(videyId)) {
-                                trackingMap.add(videyId);
-                                allVideos.push({
-                                    id: videyId,
-                                    title: title.trim() || `Videy ID: ${videyId}`,
-                                    thumbnail: thumbnail,
-                                    originalUrl: urlStr
-                                });
-                            }
-                        });
+                    // 2. Kumpulkan semua media link / src iframe untuk mendeteksi ID Videy
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = contentHtml;
+                    
+                    const linksAndIframes = [];
+                    
+                    // Ambil isi iframe src
+                    const iframes = tempDiv.querySelectorAll("iframe");
+                    iframes.forEach(iframe => {
+                        if (iframe.src) linksAndIframes.push(iframe.src);
                     });
-                } else {
-                    // Pemrosesan menggunakan HTML Scraper standar
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(responseData, "text/html");
-                    const anchorElements = doc.querySelectorAll("a");
 
-                    anchorElements.forEach(link => {
-                        const href = link.href;
-                        const videyId = extractVideyId(href);
+                    // Ambil tautan anchor href
+                    const anchors = tempDiv.querySelectorAll("a");
+                    anchors.forEach(a => {
+                        if (a.href) linksAndIframes.push(a.href);
+                    });
 
-                        if (videyId && !trackingMap.has(videyId)) {
-                            trackingMap.add(videyId);
-                            
-                            let title = link.innerText.trim();
-                            if (!title || title.length < 3) {
-                                const imgChild = link.querySelector("img");
-                                if (imgChild && imgChild.alt) {
-                                    title = imgChild.alt.trim();
-                                } else {
-                                    title = `Videy Asset ID: ${videyId}`;
-                                }
-                            }
-
-                            let thumbnail = "";
-                            const img = link.querySelector("img");
-                            if (img && img.src) {
-                                thumbnail = img.src;
-                            } else {
-                                thumbnail = `https://picsum.photos/seed/${videyId}/600/400`;
-                            }
-
-                            allVideos.push({
-                                id: videyId,
-                                title: title,
-                                thumbnail: thumbnail,
-                                originalUrl: href
-                            });
+                    // Tambahkan tautan artikel itu sendiri jika ada query ID di URL postingan
+                    const altLinks = entry.link || [];
+                    altLinks.forEach(l => {
+                        if (l.rel === "alternate" && l.href) {
+                            linksAndIframes.push(l.href);
                         }
                     });
-                }
+
+                    // Scan semua tautan yang ditemukan untuk mencocokkan ID Videy
+                    let matchedId = null;
+                    for (let rawUrl of linksAndIframes) {
+                        const foundId = extractVideyIdFromContent(rawUrl);
+                        if (foundId) {
+                            matchedId = foundId;
+                            break; // Cukup ambil ID video pertama yang valid di dalam artikel
+                        }
+                    }
+
+                    // Jika ID video ditemukan di postingan tersebut
+                    if (matchedId && !trackingMap.has(matchedId)) {
+                        trackingMap.add(matchedId);
+                        allVideos.push({
+                            id: matchedId,
+                            title: postTitle.trim(),
+                            thumbnail: postThumbnail,
+                            originalUrl: `https://videy.co/v?id=${matchedId}`
+                        });
+                    }
+                });
 
                 document.getElementById("loadingState").classList.add("hidden");
                 displayVideos(allVideos);
                 
-                console.log(`Sukses memuat lewat ${successProxyName}. Menemukan ${allVideos.length} video.`);
+                console.log(`Sukses memuat lewat ${successProxyName}. Menemukan ${allVideos.length} postingan.`);
             } catch (err) {
                 console.error("Gagal melakukan parse respons data:", err);
                 document.getElementById("loadingState").classList.add("hidden");
-                showError("Gagal memproses data yang diterima dari proxy. Struktur data tidak cocok.");
+                showError("Gagal memproses data postingan. Pastikan format feed blogspot Anda aktif.");
             }
         }
 
@@ -543,48 +517,56 @@
                 card.className = "group bg-gray-900 border border-gray-850 hover:border-red-600/30 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 relative";
                 card.innerHTML = `
                     <!-- Wadah Thumbnail Gambar -->
-                    <div class="relative aspect-[4/3] w-full overflow-hidden bg-gray-950 cursor-pointer" onclick="openPlayerModal('${video.id}', '${escapeHtml(video.title)}')">
+                    <div class="relative aspect-[4/3] w-full overflow-hidden bg-gray-950 cursor-pointer" onclick="window.open('${video.originalUrl}', '_blank')">
                         <img class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
                              src="${video.thumbnail}" alt="${escapeHtml(video.title)}"
                              onerror="this.onerror=null; this.src='https://picsum.photos/seed/${video.id}/600/400';">
                         
                         <!-- Lapisan efek hover putar video -->
                         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="bg-red-600 hover:bg-red-500 text-white rounded-full p-3 shadow-lg shadow-red-600/30 transform scale-75 group-hover:scale-100 transition duration-300">
-                                <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                            <span class="bg-blue-600 hover:bg-blue-500 text-white rounded-full py-3 px-5 font-bold text-xs flex items-center gap-1.5 shadow-lg transform scale-90 group-hover:scale-100 transition duration-300">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Putar di Web Lain
                             </span>
                         </div>
                         
                         <!-- Lencana ID Videy di kiri atas -->
-                        <span class="absolute top-3 left-3 bg-black/85 text-[10px] font-bold tracking-widest text-red-450 border border-gray-800 px-2.5 py-1 rounded uppercase z-10">
-                            ID: ${video.id}
+                        <span class="absolute top-3 left-3 bg-black/85 text-[10px] font-bold tracking-widest text-red-455 border border-gray-800 px-2.5 py-1 rounded uppercase z-10 shadow-lg">
+                            Video ID: ${video.id}
                         </span>
 
-                        <!-- Tombol unduh thumbnail melayang di kanan atas (Fitur Baru) -->
+                        <!-- Tombol unduh thumbnail melayang di kanan atas -->
                         <button onclick="event.stopPropagation(); triggerDownload('${video.thumbnail}', 'thumbnail-${video.id}.jpg')" 
-                           class="absolute top-3 right-3 bg-black/80 hover:bg-red-600 hover:text-white text-gray-400 border border-gray-800 p-2 rounded-xl transition shadow-md z-20" 
+                           class="absolute top-3 right-3 bg-black/85 hover:bg-red-600 hover:text-white text-gray-400 border border-gray-800 p-2.5 rounded-xl transition shadow-xl z-20" 
                            title="Unduh Gambar Preview/Thumbnail Ini">
-                            <i class="fa-solid fa-image text-xs"></i>
+                            <i class="fa-solid fa-download text-xs mr-1"></i>Cover
                         </button>
                     </div>
 
                     <!-- Detail & Deskripsi Kartu -->
-                    <div class="p-4 flex flex-col justify-between h-[120px]">
+                    <div class="p-4 flex flex-col justify-between h-[135px]">
                         <h4 class="text-xs font-semibold text-gray-200 line-clamp-2 leading-relaxed" title="${escapeHtml(video.title)}">
                             ${video.title}
                         </h4>
                         
-                        <div class="grid grid-cols-2 gap-2 mt-auto">
-                            <!-- Tombol Play Modal -->
-                            <button onclick="openPlayerModal('${video.id}', '${escapeHtml(video.title)}')" 
-                                class="flex items-center justify-center gap-1.5 bg-gray-950 hover:bg-gray-850 border border-gray-850 text-gray-300 font-semibold text-[11px] py-1.5 px-3 rounded-lg transition">
-                                <i class="fa-solid fa-play text-[10px]"></i> Play
-                            </button>
-                            <!-- Tautan Langsung Unduh Video MP4 -->
-                            <a href="https://cdn.videy.co/${video.id}.mp4" target="_blank" download
-                                class="flex items-center justify-center gap-1.5 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-semibold text-[11px] py-1.5 px-3 rounded-lg transition">
-                                <i class="fa-solid fa-arrow-down text-[10px]"></i> Download
+                        <div class="space-y-2 mt-auto">
+                            <!-- Tombol Utama: Putar Ke Web Lain -->
+                            <a href="${video.originalUrl}" target="_blank"
+                                class="w-full flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2 px-3 rounded-lg transition shadow-md shadow-blue-900/10">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Putar (Web Lain)
                             </a>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <!-- Putar Lokal Cadangan -->
+                                <button onclick="openPlayerModal('${video.id}', '${escapeHtml(video.title)}')" 
+                                    class="flex items-center justify-center gap-1.5 bg-gray-950 hover:bg-gray-850 border border-gray-850 text-gray-400 hover:text-gray-200 font-semibold text-[10px] py-1.5 px-2 rounded-lg transition">
+                                    <i class="fa-solid fa-circle-play text-[10px]"></i> Sini
+                                </button>
+                                <!-- Tautan Langsung Unduh Video MP4 -->
+                                <a href="https://cdn.videy.co/${video.id}.mp4" target="_blank" download
+                                    class="flex items-center justify-center gap-1.5 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-semibold text-[10px] py-1.5 px-2 rounded-lg transition">
+                                    <i class="fa-solid fa-arrow-down text-[10px]"></i> Unduh MP4
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -607,7 +589,7 @@
                 return;
             }
 
-            const extractedId = extractVideyId(rawVal) || rawVal;
+            const extractedId = extractVideyIdFromContent(rawVal) || rawVal;
             if (extractedId.length < 3) {
                 alert("Format ID atau Link tidak valid!");
                 return;
@@ -622,17 +604,14 @@
             document.getElementById("modalVideoTitle").innerText = title;
             document.getElementById("modalDownloadBtn").href = `https://cdn.videy.co/${videyId}.mp4`;
             
-            // Mencari URL thumbnail asli dari video yang sedang aktif
             const videoAktif = allVideos.find(v => v.id === videyId);
             const urlThumbnail = videoAktif ? videoAktif.thumbnail : `https://picsum.photos/seed/${videyId}/600/400`;
             
-            // Konfigurasi dinamis untuk fungsi unduh thumbnail di modal
             const btnUnduhThumb = document.getElementById("modalDownloadThumbBtn");
             btnUnduhThumb.onclick = function() {
                 triggerDownload(urlThumbnail, `thumbnail-${videyId}.jpg`);
             };
             
-            // Membuka modal dan mereset loading pemutar
             const modal = document.getElementById("playerModal");
             modal.classList.remove("hidden");
             document.getElementById("playerSpinner").classList.remove("hidden");

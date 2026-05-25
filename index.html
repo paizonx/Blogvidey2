@@ -39,7 +39,7 @@
                     <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-500 to-rose-400 bg-clip-text text-transparent">
                         VIDEY HUB
                     </h1>
-                    <p class="text-[10px] text-gray-400 font-medium tracking-widest uppercase">Blogger Post Content & Cover Downloader</p>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-widest uppercase">Direct Video Preview & Cover Extractor</p>
                 </div>
             </div>
             
@@ -85,13 +85,13 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
                         <h2 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
                             <i class="fa-solid fa-square-rss text-red-500"></i>
-                            Sumber Scraping Blogger (Post Engine)
+                            Sumber Scraping Blogger (Post Engine Pro)
                         </h2>
                         <span class="text-[10px] bg-indigo-950 border border-indigo-800 text-indigo-400 font-bold px-2.5 py-1 rounded-full mt-1 sm:mt-0">
-                            Blogger Content Scanner Aktif
+                            Video Cover Generator Aktif
                         </span>
                     </div>
-                    <p class="text-xs text-gray-400 mb-4">Mengekstrak judul postingan, gambar preview, serta ID video Videy yang dipasang di dalam konten artikel.</p>
+                    <p class="text-xs text-gray-400 mb-4">Mengekstrak judul postingan dan ID video langsung dari postingan Anda, lalu membuat cover asli secara real-time dari video Videy tersebut.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                     <div class="md:col-span-2">
@@ -102,37 +102,52 @@
                     <div>
                         <label class="block text-[10px] text-gray-400 uppercase tracking-wider mb-1 font-bold">Maks Hasil Post</label>
                         <select id="maxResultsInput" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-gray-200 focus:outline-none focus:border-red-500 transition">
-                            <option value="50">50 Postingan</option>
-                            <option value="150" selected>150 Postingan (Saran)</option>
-                            <option value="300">300 Postingan</option>
+                            <option value="25">25 Postingan</option>
+                            <option value="100" selected>100 Postingan (Saran)</option>
+                            <option value="250">250 Postingan</option>
                             <option value="500">500 Postingan</option>
                         </select>
                     </div>
                     <div class="flex items-end">
-                        <button onclick="fetchBlogData()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition border border-gray-750 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-rotate"></i> Muat & Ekstrak
+                        <button onclick="fetchBlogData()" class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition shadow-lg shadow-red-900/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass"></i> Cari & Ekstrak
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bagian Filter & Pencarian -->
-        <div class="bg-gray-900/50 border border-gray-850 rounded-2xl p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="relative w-full md:w-96">
+        <!-- Bagian Filter, Pencarian, Pilihan Layout & Export -->
+        <div class="bg-gray-900/50 border border-gray-850 rounded-2xl p-4 mb-8 flex flex-col lg:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full lg:w-80">
                 <input type="text" id="searchInput" oninput="filterVideos()" placeholder="Cari judul postingan atau ID..." 
                     class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-gray-200 focus:outline-none focus:border-red-500 transition pl-9">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-500 text-xs"></i>
             </div>
             
-            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
-                <div class="text-xs text-gray-400 bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 flex items-center gap-2">
-                    <span class="inline-block w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                    Engine: <span id="activeEngineText" class="font-bold text-indigo-400">Blogger API Content Scanner</span>
+            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-end">
+                <!-- Pilihan Layout Tampilan (Grid / Tabel) -->
+                <div class="flex items-center bg-gray-950 border border-gray-800 rounded-xl p-1 gap-1">
+                    <button id="btnViewGrid" onclick="setViewMode('grid')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-red-600/20 border border-red-500/30 text-red-400">
+                        <i class="fa-solid fa-grip"></i> Grid
+                    </button>
+                    <button id="btnViewTable" onclick="setViewMode('table')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-gray-400 hover:text-gray-200">
+                        <i class="fa-solid fa-table-list"></i> Tabel Data
+                    </button>
                 </div>
+
+                <div class="h-6 w-px bg-gray-800 hidden sm:block"></div>
+
+                <!-- Tombol Eksport Data -->
+                <button onclick="exportData('json')" class="bg-gray-900 hover:bg-gray-850 border border-gray-800 text-gray-300 font-semibold text-xs py-2 px-3 rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-code text-indigo-400"></i> Simpan JSON
+                </button>
+                <button onclick="exportData('csv')" class="bg-gray-900 hover:bg-gray-850 border border-gray-800 text-gray-300 font-semibold text-xs py-2 px-3 rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-csv text-emerald-400"></i> Simpan CSV
+                </button>
                 <div class="text-xs text-gray-400 bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 flex items-center gap-2">
                     <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Total Postingan Terekstrak: <span id="videoStatsCount" class="font-bold text-white">0</span>
+                    Hasil: <span id="videoStatsCount" class="font-bold text-white">0</span>
                 </div>
             </div>
         </div>
@@ -163,8 +178,8 @@
             </div>
         </div>
 
-        <!-- Grid Kartu Video -->
-        <div id="videosGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        <!-- Wadah Data Dinamis (Dapat berganti class antara Grid / Table Block via JS) -->
+        <div id="videosContainer" class="w-full"></div>
 
         <!-- Wadah Tampilan Kosong -->
         <div id="emptyState" class="hidden py-16 text-center">
@@ -176,11 +191,6 @@
         </div>
 
     </main>
-
-    <!-- Footer -->
-    <footer class="text-center py-12 text-xs text-gray-500 border-t border-gray-900 mt-20">
-        <p>© 2026 Videy Hub Utility. Dibuat khusus untuk pengarsipan dan manajemen media pribadi.</p>
-    </footer>
 
     <!-- Modal Pemutar Interaktif (Cadangan/Opsi Putar di Sini) -->
     <div id="playerModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
@@ -276,6 +286,7 @@
         let allVideos = [];
         let currentVideyId = null;
         let currentPlayerMethod = 'iframe'; // default ke iframe
+        let currentViewMode = 'grid'; // mode default (grid / table)
 
         // Daftar server proxy cadangan untuk mengatasi CORS dan kebijakan sandbox preview
         const PROXIES = [
@@ -288,23 +299,31 @@
         const extractVideyIdFromContent = (text) => {
             if (!text) return null;
             try {
-                // 1. Cari tautan embed: videy.co/embed?id=VIDEO_ID
-                // 2. Cari tautan tonton: videy.co/v?id=VIDEO_ID
+                // 1. Cari tautan embed: videy.co/embed?id=VIDEO_ID atau videy.co/v?id=VIDEO_ID
                 const idQueryMatch = text.match(/videy\.co\/(embed|v)\?id=([a-zA-Z0-9_-]+)/i);
                 if (idQueryMatch && idQueryMatch[2]) {
                     return idQueryMatch[2];
                 }
 
-                // 3. Cari tautan CDN langsung: cdn.videy.co/VIDEO_ID.mp4
+                // 2. Cari tautan CDN langsung: cdn.videy.co/VIDEO_ID.mp4
                 const cdnMatch = text.match(/cdn\.videy\.co\/([a-zA-Z0-9_-]+)\.(mp4|mov|webm)/i);
                 if (cdnMatch && cdnMatch[1]) {
                     return cdnMatch[1];
                 }
 
-                // 4. Cari pola url umum videy: videy.co/VIDEO_ID
+                // 3. Cari pola url umum videy: videy.co/VIDEO_ID
                 const pathMatch = text.match(/videy\.co\/([a-zA-Z0-9_-]+)/i);
                 if (pathMatch && pathMatch[1] && !['embed', 'v'].includes(pathMatch[1])) {
                     return pathMatch[1];
+                }
+
+                // 4. Cari pola ID Videy yang berdiri sendiri (biasanya 9 karakter alfanumerik) 
+                // jika di sekelilingnya terdapat petunjuk kata "videy" atau dalam format iframe
+                if (text.toLowerCase().includes("videy") || text.includes("<iframe")) {
+                    const id9CharMatch = text.match(/\b([a-zA-Z0-9]{9})\b/);
+                    if (id9CharMatch) {
+                        return id9CharMatch[1];
+                    }
                 }
             } catch (e) {
                 console.warn("Kesalahan pencocokan regex:", e);
@@ -312,15 +331,41 @@
             return null;
         };
 
+        // Fungsi mencetak log ke standar dev console
+        function logToConsole(message, type = "info") {
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
         // Inisialisasi awal scraping saat halaman dimuat
         window.onload = function() {
+            logToConsole("Inisialisasi sistem Videy Hub Pro berhasil.", "success");
             fetchBlogData();
         };
 
-        // Fungsi unduh berkas (file/image blob) secara pintar untuk mengatasi masalah cross-origin
+        // Fungsi untuk mengganti tipe tampilan (Grid atau Tabel Data)
+        function setViewMode(mode) {
+            currentViewMode = mode;
+            
+            const btnGrid = document.getElementById("btnViewGrid");
+            const btnTable = document.getElementById("btnViewTable");
+
+            if (mode === 'grid') {
+                btnGrid.className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-red-600/20 border border-red-500/30 text-red-400";
+                btnTable.className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-gray-400 hover:text-gray-200";
+            } else {
+                btnTable.className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-red-600/20 border border-red-500/30 text-red-400";
+                btnGrid.className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-gray-400 hover:text-gray-200";
+            }
+
+            // Render ulang data menggunakan view baru
+            filterVideos();
+        }
+
+        // Fungsi pengunduhan thumbnail yang telah diperbarui agar mendukung unduhan file blob langsung
         async function triggerDownload(url, filename) {
             const toast = document.getElementById("downloadProgressToast");
             toast.classList.remove("hidden");
+            logToConsole(`Memulai download thumbnail: ${filename}...`, "info");
             
             try {
                 // Gunakan proxy pertama untuk memintas proteksi CORS Blogger
@@ -339,12 +384,140 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(blobUrl);
+                logToConsole(`Unduhan thumbnail ${filename} berhasil!`, "success");
             } catch (e) {
-                console.warn("Proxy blob download failed, falling back to direct tab:", e);
-                // Fallback: buka di tab baru agar user bisa simpan manual
+                logToConsole(`Masalah keamanan CORS. Membuka di tab baru agar dapat di-Save Image secara manual.`, "warning");
                 window.open(url, '_blank');
             } finally {
                 toast.classList.add("hidden");
+            }
+        }
+
+        // --- SISTEM PEMBUAT COVER DINAMIS (DARI DETEKSI DETIK VIDEO) ---
+        // Fungsi ini memicu pemuatan video di latar belakang untuk menangkap frame pertamanya
+        function extractVideoFrameAsCover(videoId, imgElementId) {
+            const videoUrl = `https://cdn.videy.co/${videoId}.mp4`;
+            const video = document.createElement("video");
+            
+            video.src = videoUrl;
+            video.crossOrigin = "anonymous";
+            video.muted = true;
+            video.playsInline = true;
+            
+            // Lompati detik pertama (0.8s) agar tidak menangkap frame hitam kosong pada pembukaan video
+            video.currentTime = 0.8;
+
+            video.onseeked = function() {
+                try {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 360;
+                    
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    const coverDataUrl = canvas.toDataURL("image/jpeg");
+                    
+                    // Pasang ke target elemen gambar di grid/tabel
+                    const targetImg = document.getElementById(imgElementId);
+                    if (targetImg) {
+                        targetImg.src = coverDataUrl;
+                    }
+
+                    // Perbarui state global allVideos agar tombol download bisa mengambil versi cover ini
+                    const vIndex = allVideos.findIndex(v => v.id === videoId);
+                    if (vIndex !== -1) {
+                        allVideos[vIndex].thumbnail = coverDataUrl;
+                    }
+                    
+                    logToConsole(`Cover berhasil diekstrak dari frame video asli [${videoId}]`, "success");
+                } catch (e) {
+                    logToConsole(`Gagal menggambar frame [${videoId}] ke canvas (CORS). Membuat cover premium seni abstrak...`, "warning");
+                    generateAbstractCanvasCover(videoId, imgElementId);
+                }
+            };
+
+            video.onerror = function() {
+                logToConsole(`Gagal memuat cdn.videy.co untuk ekstraksi cover [${videoId}]. Membuat cover cadangan...`, "error");
+                generateAbstractCanvasCover(videoId, imgElementId);
+            };
+        }
+
+        // Sistem Auto-Generate Cover Cadangan (Abstrak Premium dengan Tombol Putar)
+        function generateAbstractCanvasCover(videoId, imgElementId) {
+            const canvas = document.createElement("canvas");
+            canvas.width = 600;
+            canvas.height = 400;
+            const ctx = canvas.getContext("2d");
+            
+            // Tentukan palet warna gradien acak berdasarkan karakter ID video agar tampak unik setiap video
+            const colors = [
+                { s: "#ef4444", e: "#4c0519" }, // Merah Cherry
+                { s: "#6366f1", e: "#1e1b4b" }, // Indigo Royal
+                { s: "#ec4899", e: "#500724" }, // Rose Velvet
+                { s: "#f97316", e: "#431407" }, // Orange Fire
+                { s: "#14b8a6", e: "#042f2e" }  // Teal Ocean
+            ];
+            const charSum = videoId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const selectedPalette = colors[charSum % colors.length];
+
+            // Warnai background gradien linear
+            const grad = ctx.createLinearGradient(0, 0, 600, 400);
+            grad.addColorStop(0, selectedPalette.s);
+            grad.addColorStop(1, selectedPalette.e);
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 600, 400);
+
+            // Tambahkan elemen visual estetika (lingkaran gradasi transparan di latar)
+            ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
+            ctx.beginPath();
+            ctx.arc(100, 100, 180, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(500, 300, 150, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Membuat tombol putar visual kustom (glassmorphism circle) di tengah
+            ctx.fillStyle = "rgba(255, 255, 255, 0.12)";
+            ctx.beginPath();
+            ctx.arc(300, 180, 50, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Segitiga tombol play putih
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.moveTo(285, 155);
+            ctx.lineTo(285, 205);
+            ctx.lineTo(325, 180);
+            ctx.closePath();
+            ctx.fill();
+
+            // Tambahkan Label Nama Brand
+            ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            ctx.font = "bold 20px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("VIDEY PREMIUM STREAM", 300, 280);
+
+            // Tulis ID Video
+            ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+            ctx.font = "14px monospace";
+            ctx.fillText(`Video ID: ${videoId}`, 300, 310);
+
+            const dataUrl = canvas.toDataURL("image/jpeg");
+            
+            // Pasang ke target
+            const targetImg = document.getElementById(imgElementId);
+            if (targetImg) {
+                targetImg.src = dataUrl;
+            }
+
+            // Simpan ke database state
+            const vIndex = allVideos.findIndex(v => v.id === videoId);
+            if (vIndex !== -1) {
+                allVideos[vIndex].thumbnail = dataUrl;
             }
         }
 
@@ -356,14 +529,16 @@
                 return;
             }
 
-            // Normalisasi URL HTTP ke HTTPS jika perlu
+            // Normalisasi URL agar selalu aman dan terbebas dari sengketa SSL/HTTP campuran
             if (!/^https?:\/\//i.test(blogUrl)) {
                 blogUrl = 'http://' + blogUrl;
             }
 
+            logToConsole(`Menghubungkan ke target blog: ${blogUrl}`, "info");
+
             // Memunculkan efek loading animasi
             document.getElementById("loadingState").classList.remove("hidden");
-            document.getElementById("videosGrid").classList.add("hidden");
+            document.getElementById("videosContainer").classList.add("hidden");
             document.getElementById("errorState").classList.add("hidden");
             document.getElementById("emptyState").classList.add("hidden");
 
@@ -383,14 +558,13 @@
             for (let i = 0; i < PROXIES.length; i++) {
                 const currentProxy = PROXIES[i];
                 document.getElementById("proxyStatusText").innerText = `Menghubungkan via ${currentProxy.name}... [Proxy ${i+1}/${PROXIES.length}]`;
+                logToConsole(`Menghubungi server cadangan ${currentProxy.name}...`, "info");
                 
                 try {
                     const requestUrl = currentProxy.get(targetUrl);
-                    console.log(`Mencoba proxy ${currentProxy.name}: ${requestUrl}`);
-                    
                     const response = await fetch(requestUrl);
                     if (!response.ok) {
-                        throw new Error(`HTTP Error Status: ${response.status}`);
+                        throw new Error("HTTP Error");
                     }
                     
                     const text = await response.text();
@@ -398,10 +572,11 @@
                     if (text && text.trim().length > 100) {
                         responseData = text;
                         successProxyName = currentProxy.name;
+                        logToConsole(`Terhubung! Menggunakan proxy ${currentProxy.name}.`, "success");
                         break; // Sukses, keluar dari loop proxy
                     }
                 } catch (err) {
-                    console.warn(`Proxy ${currentProxy.name} gagal dengan error:`, err);
+                    logToConsole(`Proxy ${currentProxy.name} sibuk atau diblokir. Mencoba server berikutnya...`, "warning");
                 }
             }
 
@@ -409,6 +584,7 @@
             if (!responseData) {
                 document.getElementById("loadingState").classList.add("hidden");
                 showError("Gagal terhubung ke database blogspot. Server proxy cadangan sedang sibuk atau URL salah.");
+                logToConsole("Error: Semua server proxy gagal merespon. Proses dibatalkan.", "error");
                 return;
             }
 
@@ -419,49 +595,37 @@
 
                 const json = JSON.parse(responseData);
                 const entries = json.feed?.entry || [];
+                logToConsole(`Mendapatkan respon API JSON. Ditemukan ${entries.length} postingan untuk dipindai.`, "info");
                 
-                entries.forEach(entry => {
-                    const postTitle = entry.title?.$t || "Untitled Post";
+                entries.forEach((entry, idx) => {
+                    const postTitle = entry.title?.$t || `Postingan Tanpa Judul #${idx+1}`;
                     const contentHtml = entry.content?.$t || "";
-                    
-                    // 1. Cari Thumbnail Postingan asli resolusi tinggi
-                    let postThumbnail = "";
-                    if (entry.media$thumbnail?.url) {
-                        // Ubah resolusi kecil s72-c menjadi s600 agar tajam
-                        postThumbnail = entry.media$thumbnail.url.replace(/\/s72-c/, "/s600");
-                    } else {
-                        // Fallback: Cari gambar img pertama di dalam body postingan
-                        const tempDiv = document.createElement("div");
-                        tempDiv.innerHTML = contentHtml;
-                        const firstImg = tempDiv.querySelector("img");
-                        postThumbnail = firstImg ? firstImg.src : `https://picsum.photos/seed/${postTitle.length}/600/400`;
-                    }
 
-                    // 2. Kumpulkan semua media link / src iframe untuk mendeteksi ID Videy
+                    // Kumpulkan semua media link / src iframe untuk mendeteksi ID Videy
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = contentHtml;
                     
                     const linksAndIframes = [];
                     
-                    // Ambil isi iframe src
                     const iframes = tempDiv.querySelectorAll("iframe");
                     iframes.forEach(iframe => {
                         if (iframe.src) linksAndIframes.push(iframe.src);
                     });
 
-                    // Ambil tautan anchor href
                     const anchors = tempDiv.querySelectorAll("a");
                     anchors.forEach(a => {
                         if (a.href) linksAndIframes.push(a.href);
                     });
 
-                    // Tambahkan tautan artikel itu sendiri jika ada query ID di URL postingan
                     const altLinks = entry.link || [];
                     altLinks.forEach(l => {
                         if (l.rel === "alternate" && l.href) {
                             linksAndIframes.push(l.href);
                         }
                     });
+
+                    // Cek juga seluruh konten teks mentah
+                    linksAndIframes.push(contentHtml);
 
                     // Scan semua tautan yang ditemukan untuk mencocokkan ID Videy
                     let matchedId = null;
@@ -474,21 +638,23 @@
                     }
 
                     // Jika ID video ditemukan di postingan tersebut
-                    if (matchedId && !trackingMap.has(matchedId)) {
-                        trackingMap.add(matchedId);
-                        allVideos.push({
-                            id: matchedId,
-                            title: postTitle.trim(),
-                            thumbnail: postThumbnail,
-                            originalUrl: `https://videy.co/v?id=${matchedId}`
-                        });
+                    if (matchedId) {
+                        if (!trackingMap.has(matchedId)) {
+                            trackingMap.add(matchedId);
+                            allVideos.push({
+                                id: matchedId,
+                                title: postTitle.trim(),
+                                thumbnail: "GENERATE_VIDEO_COVER", // Selalu paksa sistem untuk mengambil cover dari preview video Videy asli
+                                originalUrl: `https://videy.co/v?id=${matchedId}`
+                            });
+                        }
                     }
                 });
 
                 document.getElementById("loadingState").classList.add("hidden");
                 displayVideos(allVideos);
                 
-                console.log(`Sukses memuat lewat ${successProxyName}. Menemukan ${allVideos.length} postingan.`);
+                logToConsole(`Scraping selesai! Berhasil menyusun ${allVideos.length} data video aktif.`, "success");
             } catch (err) {
                 console.error("Gagal melakukan parse respons data:", err);
                 document.getElementById("loadingState").classList.add("hidden");
@@ -496,82 +662,188 @@
             }
         }
 
-        // Tampilkan semua kartu video di grid
+        // Tampilkan semua kartu/tabel video di dalam wadah
         function displayVideos(videos) {
-            const grid = document.getElementById("videosGrid");
-            grid.innerHTML = "";
+            const container = document.getElementById("videosContainer");
+            container.innerHTML = "";
             
             document.getElementById("videoStatsCount").innerText = videos.length;
 
             if (videos.length === 0) {
-                grid.classList.add("hidden");
+                container.classList.add("hidden");
                 document.getElementById("emptyState").classList.remove("hidden");
                 return;
             }
 
             document.getElementById("emptyState").classList.add("hidden");
-            grid.classList.remove("hidden");
+            container.classList.remove("hidden");
 
-            videos.forEach(video => {
-                const card = document.createElement("div");
-                card.className = "group bg-gray-900 border border-gray-850 hover:border-red-600/30 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 relative";
-                card.innerHTML = `
-                    <!-- Wadah Thumbnail Gambar -->
-                    <div class="relative aspect-[4/3] w-full overflow-hidden bg-gray-950 cursor-pointer" onclick="window.open('${video.originalUrl}', '_blank')">
-                        <img class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
-                             src="${video.thumbnail}" alt="${escapeHtml(video.title)}"
-                             onerror="this.onerror=null; this.src='https://picsum.photos/seed/${video.id}/600/400';">
-                        
-                        <!-- Lapisan efek hover putar video -->
-                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="bg-blue-600 hover:bg-blue-500 text-white rounded-full py-3 px-5 font-bold text-xs flex items-center gap-1.5 shadow-lg transform scale-90 group-hover:scale-100 transition duration-300">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Putar di Web Lain
-                            </span>
-                        </div>
-                        
-                        <!-- Lencana ID Videy di kiri atas -->
-                        <span class="absolute top-3 left-3 bg-black/85 text-[10px] font-bold tracking-widest text-red-455 border border-gray-800 px-2.5 py-1 rounded uppercase z-10 shadow-lg">
-                            Video ID: ${video.id}
-                        </span>
-
-                        <!-- Tombol unduh thumbnail melayang di kanan atas -->
-                        <button onclick="event.stopPropagation(); triggerDownload('${video.thumbnail}', 'thumbnail-${video.id}.jpg')" 
-                           class="absolute top-3 right-3 bg-black/85 hover:bg-red-600 hover:text-white text-gray-400 border border-gray-800 p-2.5 rounded-xl transition shadow-xl z-20" 
-                           title="Unduh Gambar Preview/Thumbnail Ini">
-                            <i class="fa-solid fa-download text-xs mr-1"></i>Cover
-                        </button>
-                    </div>
-
-                    <!-- Detail & Deskripsi Kartu -->
-                    <div class="p-4 flex flex-col justify-between h-[135px]">
-                        <h4 class="text-xs font-semibold text-gray-200 line-clamp-2 leading-relaxed" title="${escapeHtml(video.title)}">
-                            ${video.title}
-                        </h4>
-                        
-                        <div class="space-y-2 mt-auto">
-                            <!-- Tombol Utama: Putar Ke Web Lain -->
-                            <a href="${video.originalUrl}" target="_blank"
-                                class="w-full flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2 px-3 rounded-lg transition shadow-md shadow-blue-900/10">
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Putar (Web Lain)
-                            </a>
+            if (currentViewMode === 'grid') {
+                // TAMPILAN GRID KARTU (CARD GRID)
+                container.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6";
+                
+                videos.forEach((video, idx) => {
+                    const card = document.createElement("div");
+                    card.className = "group bg-gray-900 border border-gray-850 hover:border-red-600/30 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 relative";
+                    
+                    const imgElementId = `cover-grid-${video.id}`;
+                    
+                    card.innerHTML = `
+                        <!-- Wadah Thumbnail Gambar -->
+                        <div class="relative aspect-[4/3] w-full overflow-hidden bg-gray-950 cursor-pointer" onclick="window.open('${video.originalUrl}', '_blank')">
+                            <!-- Elemen Gambar (Akan diisi sampul postingan atau frame video hasil ekstrasi) -->
+                            <img id="${imgElementId}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
+                                 src="" alt="${escapeHtml(video.title)}" />
                             
-                            <div class="grid grid-cols-2 gap-2">
-                                <!-- Putar Lokal Cadangan -->
-                                <button onclick="openPlayerModal('${video.id}', '${escapeHtml(video.title)}')" 
-                                    class="flex items-center justify-center gap-1.5 bg-gray-950 hover:bg-gray-850 border border-gray-850 text-gray-400 hover:text-gray-200 font-semibold text-[10px] py-1.5 px-2 rounded-lg transition">
-                                    <i class="fa-solid fa-circle-play text-[10px]"></i> Sini
-                                </button>
-                                <!-- Tautan Langsung Unduh Video MP4 -->
-                                <a href="https://cdn.videy.co/${video.id}.mp4" target="_blank" download
-                                    class="flex items-center justify-center gap-1.5 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-semibold text-[10px] py-1.5 px-2 rounded-lg transition">
-                                    <i class="fa-solid fa-arrow-down text-[10px]"></i> Unduh MP4
+                            <!-- Lapisan efek hover putar video -->
+                            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                                <span class="bg-blue-600 hover:bg-blue-500 text-white rounded-full py-3 px-5 font-bold text-xs flex items-center gap-1.5 shadow-lg transform scale-90 group-hover:scale-100 transition duration-300">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Putar (Web Lain)
+                                </span>
+                            </div>
+                            
+                            <!-- Lencana ID Videy di kiri atas -->
+                            <span class="absolute top-3 left-3 bg-black/85 text-[10px] font-bold tracking-widest text-red-455 border border-gray-800 px-2.5 py-1 rounded uppercase z-10 shadow-lg">
+                                ID: ${video.id}
+                            </span>
+
+                            <!-- Tombol unduh thumbnail melayang di kanan atas -->
+                            <button onclick="event.stopPropagation(); triggerDownload(document.getElementById('${imgElementId}').src, 'thumbnail-${video.id}.jpg')" 
+                               class="absolute top-3 right-3 bg-black/85 hover:bg-red-600 hover:text-white text-gray-450 border border-gray-800 px-2.5 py-2 rounded-xl transition shadow-xl z-20 flex items-center gap-1 text-[11px] font-bold" 
+                               title="Unduh Gambar Preview/Thumbnail Ini">
+                                <i class="fa-solid fa-download text-xs text-red-500"></i> Cover
+                            </button>
+                        </div>
+
+                        <!-- Detail & Deskripsi Kartu -->
+                        <div class="p-4 flex flex-col justify-between h-[135px]">
+                            <h4 class="text-xs font-semibold text-gray-200 line-clamp-2 leading-relaxed" title="${escapeHtml(video.title)}">
+                                ${video.title}
+                            </h4>
+                            
+                            <div class="space-y-2 mt-auto">
+                                <!-- Tombol Utama: Putar Ke Web Lain -->
+                                <a href="${video.originalUrl}" target="_blank"
+                                    class="w-full flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2 px-3 rounded-lg transition shadow-md shadow-blue-900/10">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Putar (Web Lain)
                                 </a>
+                                
+                                <div class="grid grid-cols-2 gap-2">
+                                    <!-- Putar Lokal Sini -->
+                                    <button onclick="openPlayerModal('${video.id}', '${escapeHtml(video.title)}')" 
+                                        class="flex items-center justify-center gap-1.5 bg-gray-950 hover:bg-gray-850 border border-gray-850 text-gray-400 hover:text-gray-200 font-semibold text-[10px] py-1.5 px-2 rounded-lg transition">
+                                        <i class="fa-solid fa-circle-play text-[10px]"></i> Sini
+                                    </button>
+                                    <!-- Tautan Langsung Unduh Video MP4 -->
+                                    <a href="https://cdn.videy.co/${video.id}.mp4" target="_blank" download
+                                        class="flex items-center justify-center gap-1.5 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-semibold text-[10px] py-1.5 px-2 rounded-lg transition">
+                                        <i class="fa-solid fa-arrow-down text-[10px]"></i> Unduh MP4
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    `;
+                    container.appendChild(card);
+                    
+                    // Eksekusi Pemuatan Gambar / Ekstraksi Frame Video secara asinkronus
+                    setTimeout(() => {
+                        extractVideoFrameAsCover(video.id, imgElementId);
+                    }, idx * 100); // Beri jeda/staggering 100ms agar pemuatan browser tetap ringan
+                });
+
+            } else {
+                // TAMPILAN TABEL DATA (DATA TABLE VIEW)
+                container.className = "block w-full overflow-x-auto bg-gray-900 border border-gray-800 rounded-2xl shadow-xl";
+                
+                let tableHtml = `
+                    <table class="min-w-full divide-y divide-gray-800 text-left text-xs text-gray-300">
+                        <thead class="bg-gray-950 text-gray-400 uppercase tracking-wider text-[10px] font-bold">
+                            <tr>
+                                <th class="px-6 py-4 w-24 text-center">Cover</th>
+                                <th class="px-6 py-4">Judul Postingan</th>
+                                <th class="px-6 py-4 w-32">ID Video</th>
+                                <th class="px-6 py-4 w-72 text-right">Opsi / Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-850">
                 `;
-                grid.appendChild(card);
-            });
+
+                videos.forEach(video => {
+                    const imgElementId = `cover-table-${video.id}`;
+                    tableHtml += `
+                        <tr class="hover:bg-gray-850/50 transition">
+                            <!-- Cover Thumbnail Column -->
+                            <td class="px-6 py-3 text-center">
+                                <div class="relative w-16 h-12 mx-auto rounded-lg overflow-hidden bg-gray-950 border border-gray-800 group">
+                                    <img id="${imgElementId}" src="" alt="${escapeHtml(video.title)}" 
+                                         class="w-full h-full object-cover transition group-hover:scale-105" />
+                                </div>
+                            </td>
+                            
+                            <!-- Title Column -->
+                            <td class="px-6 py-3 font-medium text-gray-200">
+                                <div class="line-clamp-2 max-w-lg leading-relaxed" title="${escapeHtml(video.title)}">
+                                    ${video.title}
+                                </div>
+                            </td>
+                            
+                            <!-- ID Video Column -->
+                            <td class="px-6 py-3 font-mono text-gray-400">
+                                <span class="bg-gray-950 px-2 py-1 rounded border border-gray-800 text-[11px]">
+                                    ${video.id}
+                                </span>
+                            </td>
+                            
+                            <!-- Actions Column -->
+                            <td class="px-6 py-3 text-right">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <!-- Putar Eksternal -->
+                                    <a href="${video.originalUrl}" target="_blank" 
+                                       class="px-2.5 py-1.5 rounded-lg bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/20 font-bold transition flex items-center gap-1 text-[11px]"
+                                       title="Putar video di tab web Videy baru">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Web Lain
+                                    </a>
+                                    
+                                    <!-- Putar di Sini -->
+                                    <button onclick="openPlayerModal('${video.id}', '${escapeHtml(video.title)}')" 
+                                            class="px-2.5 py-1.5 rounded-lg bg-gray-950 hover:bg-gray-850 border border-gray-850 text-gray-300 font-semibold transition flex items-center gap-1 text-[11px]">
+                                        <i class="fa-solid fa-play"></i> Sini
+                                    </button>
+                                    
+                                    <!-- Unduh Video -->
+                                    <a href="https://cdn.videy.co/${video.id}.mp4" target="_blank" download 
+                                       class="p-1.5 rounded-lg bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 transition flex items-center justify-center w-8 h-8"
+                                       title="Unduh file MP4">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+
+                                    <!-- Unduh Cover -->
+                                    <button onclick="triggerDownload(document.getElementById('${imgElementId}').src, 'thumbnail-${video.id}.jpg')" 
+                                            class="p-1.5 rounded-lg bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/20 transition flex items-center justify-center w-8 h-8"
+                                            title="Unduh gambar sampul postingan">
+                                        <i class="fa-solid fa-image"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += `
+                        </tbody>
+                    </table>
+                `;
+                
+                container.innerHTML = tableHtml;
+
+                // Eksekusi pemuatan gambar asinkronus untuk layout tabel
+                videos.forEach((video, idx) => {
+                    const imgElementId = `cover-table-${video.id}`;
+                    setTimeout(() => {
+                        extractVideoFrameAsCover(video.id, imgElementId);
+                    }, idx * 80);
+                });
+            }
         }
 
         // Filter Pencarian Judul
@@ -604,11 +876,12 @@
             document.getElementById("modalVideoTitle").innerText = title;
             document.getElementById("modalDownloadBtn").href = `https://cdn.videy.co/${videyId}.mp4`;
             
-            const videoAktif = allVideos.find(v => v.id === videyId);
-            const urlThumbnail = videoAktif ? videoAktif.thumbnail : `https://picsum.photos/seed/${videyId}/600/400`;
-            
+            // Ambil URL gambar cover dari elemen DOM aktif agar selalu akurat saat diunduh dari modal
             const btnUnduhThumb = document.getElementById("modalDownloadThumbBtn");
             btnUnduhThumb.onclick = function() {
+                const targetImgId = currentViewMode === 'grid' ? `cover-grid-${videyId}` : `cover-table-${videyId}`;
+                const activeImg = document.getElementById(targetImgId);
+                const urlThumbnail = activeImg ? activeImg.src : `https://picsum.photos/seed/${videyId}/600/400`;
                 triggerDownload(urlThumbnail, `thumbnail-${videyId}.jpg`);
             };
             
@@ -717,6 +990,44 @@
             setTimeout(() => {
                 toast.classList.add("hidden");
             }, 3000);
+        }
+
+        // Ekspor Hasil Scrape ke CSV / JSON
+        function exportData(format) {
+            if (allVideos.length === 0) {
+                alert("Tidak ada data untuk diekspor!");
+                return;
+            }
+
+            let fileContent = "";
+            let mimeType = "";
+            let fileName = "";
+
+            if (format === 'json') {
+                fileContent = JSON.stringify(allVideos, null, 2);
+                mimeType = "application/json";
+                fileName = "videy-scraped-data.json";
+            } else if (format === 'csv') {
+                let csvRows = ["Judul Postingan,Video ID,URL Tonton Videy,URL Thumbnail/Cover"];
+                allVideos.forEach(v => {
+                    const escapedTitle = `"${v.title.replace(/"/g, '""')}"`;
+                    csvRows.push(`${escapedTitle},${v.id},${v.originalUrl},${v.thumbnail}`);
+                });
+                fileContent = csvRows.join("\n");
+                mimeType = "text/csv";
+                fileName = "videy-scraped-data.csv";
+            }
+
+            const blob = new Blob([fileContent], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            logToConsole(`Ekspor berkas ${fileName} berhasil!`, "success");
         }
 
         // Tampilkan Pesan Error
